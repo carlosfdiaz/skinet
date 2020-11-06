@@ -1,8 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { IBrand } from '../shared/models/brand';
 import { IPagination } from '../shared/models/pagination';
+import { IProduct } from '../shared/models/product';
 import { IType } from '../shared/models/productType';
 import { ShopParams } from '../shared/models/shopParams';
 
@@ -10,7 +12,7 @@ import { ShopParams } from '../shared/models/shopParams';
   providedIn: 'root'
 })
 export class ShopService {
-  baseUrl = 'https://localhost:44338/api/';
+  baseUrl = 'https://localhost:5001/api/';
 
   constructor(private http: HttpClient) { }
 
@@ -41,11 +43,16 @@ export class ShopService {
       );
   }
 
-  getBrands(){
+
+  getProduct(id: number): Observable<IProduct>{
+    return this.http.get<IProduct>(this.baseUrl + 'products/' + id.toString());
+  }
+
+  getBrands(): Observable<IBrand[]>{
     return this.http.get<IBrand[]>(this.baseUrl + 'products/brands');
   }
 
-  getTypes(){
+  getTypes(): Observable<IType[]>{
     return this.http.get<IType[]>(this.baseUrl + 'products/types');
   }
 }
